@@ -21,5 +21,13 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean install package'
 
-- publish: $(System.DefaultWorkingDirectory)/bin/WebApp
-  artifact: WebApp
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: |
+     **/*.war
+     ica/**
+     **/*
+    TargetFolder: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
